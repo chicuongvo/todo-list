@@ -10,9 +10,8 @@ let totalTask = 0;
 let doneTask = 0;
 
 class Task {
-  id = Math.round(100 * Math.random());
-  content;
-  done;
+  id = String(Math.round(10000 * Math.random()));
+  done = false;
   constructor(content) {
     this.content = content;
   }
@@ -27,6 +26,7 @@ class App {
     taskList.addEventListener('click', this._markDoneTask.bind(this));
     taskList.addEventListener('click', this._deleteTask.bind(this));
     form.addEventListener('submit', this._addTask.bind(this));
+    this._getLocalStorage();
   }
   _renderTaskNumber() {
     summary.textContent = `${this._doneTask}/${this._totalTask}`;
@@ -38,6 +38,9 @@ class App {
         task.classList.toggle('task--done');
         if (task.classList.contains('task--done')) this._doneTask++;
         else this._doneTask--;
+        const tsk = this._taskList.find(t => t.id + '' === task.dataset.id);
+        tsk.done = true;
+        this._setLocalStorage();
         this._renderTaskNumber();
       }
     }
@@ -48,6 +51,9 @@ class App {
       if (task) {
         if (task.classList.contains('task--done')) this._doneTask--;
         this._totalTask--;
+        const delIdx = this._taskList.findIndex(t => t.id === task.dataset.id);
+        if (delIdx > -1) this._taskList.splice(delIdx, 1);
+        this._setLocalStorage();
         task.remove();
         this._renderTaskNumber();
       }
@@ -57,8 +63,28 @@ class App {
     e.preventDefault();
     if (inputText.value) {
       const task = new Task(inputText.value);
-      const html = `
-      <li class="task" data-id="${task.id}">
+      this._renderTask(task);
+      console.log(this);
+      this._taskList.push(task);
+      this._setLocalStorage();
+    }
+    inputText.value = '';
+  }
+  _setLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(this._taskList));
+  }
+  _getLocalStorage() {
+    this._taskList = JSON.parse(localStorage.getItem('tasks')) ?? [];
+    this._taskList?.forEach(task => {
+      this._renderTask(task);
+      if (task.done) this._doneTask++;
+    });
+    this._totalTask = this._taskList.length;
+    this._renderTaskNumber();
+  }
+  _renderTask(task) {
+    const html = `
+      <li class="task ${task.done ? 'task--done' : ''}" data-id="${task.id}">
         <div class="radio"></div>
         <p>${task.content}</p>
         <svg
@@ -76,11 +102,9 @@ class App {
           />
         </svg>
       </li>`;
-      taskList.insertAdjacentHTML('afterbegin', html);
-      this._totalTask++;
-      this._renderTaskNumber();
-    }
-    inputText.value = '';
+    taskList.insertAdjacentHTML('afterbegin', html);
+    this._totalTask++;
+    this._renderTaskNumber();
   }
 }
 

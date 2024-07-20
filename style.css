@@ -35,8 +35,10 @@ html {
   height: 100vh;
   width: max-content;
   margin: 0 auto;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
+  /* display: grid;
+  grid-template-rows: auto 1fr; */
 }
 
 nav {
@@ -52,10 +54,12 @@ nav p {
 
 main {
   width: 500px;
+  /* height: 100vh; */
   display: grid;
   grid-template-rows: auto auto 1fr;
   row-gap: 32px;
-  /* overflow: scroll; */
+  /* flex-grow: 1; */
+  overflow: hidden;
   /* margin: 0 auto; */
   /* padding: 48px; */
 }
@@ -105,10 +109,11 @@ form {
 }
 
 form input {
+  outline: none;
   flex-grow: 1;
   background-color: #343a40;
   color: var(--color-snd);
-  padding: 16px 32px;
+  padding: 16px 24px;
   font-size: 20px;
   border: none;
   border-radius: 15px;
@@ -129,7 +134,7 @@ form button {
 
 .task-list {
   list-style-type: none;
-  /* overflow: scroll; */
+  overflow-y: scroll;
 }
 
 .radio {
