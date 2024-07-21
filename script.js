@@ -1,4 +1,4 @@
-'use-strict';
+'use strict';
 const form = document.querySelector('form');
 const btnRadio = document.querySelector('.radio');
 const btnDelete = document.querySelector('.del-icon');
