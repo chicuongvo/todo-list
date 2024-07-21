@@ -36,10 +36,14 @@ class App {
       const task = e.target.closest('.task');
       if (task) {
         task.classList.toggle('task--done');
-        if (task.classList.contains('task--done')) this._doneTask++;
-        else this._doneTask--;
         const tsk = this._taskList.find(t => t.id + '' === task.dataset.id);
-        tsk.done = true;
+        if (task.classList.contains('task--done')) {
+          this._doneTask++;
+          tsk.done = true;
+        } else {
+          this._doneTask--;
+          tsk.done = false;
+        }
         this._setLocalStorage();
         this._renderTaskNumber();
       }
