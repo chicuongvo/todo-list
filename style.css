@@ -35,10 +35,11 @@ html {
   height: 100vh;
   width: max-content;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  /* display: grid;
-  grid-template-rows: auto 1fr; */
+  /* display: flex;
+  flex-direction: column; */
+  padding: 0 32px;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 nav {
@@ -135,6 +136,7 @@ form button {
 .task-list {
   list-style-type: none;
   overflow-y: scroll;
+  margin-bottom: 32px;
 }
 
 .radio {
