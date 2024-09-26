@@ -171,3 +171,7 @@ form button {
   width: 32px;
   height: 32px;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
