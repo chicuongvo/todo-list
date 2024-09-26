@@ -8,12 +8,14 @@ export default function FormTodo({ onAddTask }) {
     const id = crypto.randomUUID();
     const newTask = { desc: task, id, isDone: false };
     onAddTask(newTask);
+    setTask("");
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
         type="text"
+        value={task}
         placeholder="Enter your task"
         onChange={e => setTask(e.target.value)}
       ></input>
