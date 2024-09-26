@@ -26,7 +26,7 @@ THIRD: #212529
 }
 
 html {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--color-snd);
   background-color: var(--color-rd);
 }
@@ -35,8 +35,6 @@ html {
   height: 100vh;
   width: max-content;
   margin: 0 auto;
-  /* display: flex;
-  flex-direction: column; */
   padding: 0 32px;
   display: grid;
   grid-template-rows: auto 1fr;
@@ -55,14 +53,10 @@ nav p {
 
 main {
   width: 500px;
-  /* height: 100vh; */
   display: grid;
   grid-template-rows: auto auto 1fr;
   row-gap: 32px;
-  /* flex-grow: 1; */
   overflow: hidden;
-  /* margin: 0 auto; */
-  /* padding: 48px; */
 }
 
 .box {
@@ -133,7 +127,7 @@ form button {
   border: none;
 }
 
-.task-list {
+.todo-list {
   list-style-type: none;
   overflow-y: scroll;
   margin-bottom: 32px;
