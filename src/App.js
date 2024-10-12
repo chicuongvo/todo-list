@@ -2,16 +2,19 @@ import FormTodo from "./components/FormTodo";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import TodoList from "./components/TodoList";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function App() {
   const [tasks, setTasks] = useState(
-    JSON.parse(localStorage.getItem("tasks")) ?? []
+    () => JSON.parse(localStorage.getItem("tasks")) ?? []
   );
+
+  const inputEl = useRef(null);
 
   useEffect(
     function () {
       localStorage.setItem("tasks", JSON.stringify(tasks));
+      inputEl.current.focus();
     },
     [tasks]
   );
@@ -39,7 +42,7 @@ function App() {
       <Nav></Nav>
       <main>
         <Header tasks={tasks}></Header>
-        <FormTodo onAddTask={handleAddTask}></FormTodo>
+        <FormTodo onAddTask={handleAddTask} ref={inputEl}></FormTodo>
         <TodoList
           tasks={tasks}
           onMarkTask={handleMarkTask}
