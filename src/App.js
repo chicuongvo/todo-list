@@ -1,11 +1,29 @@
+import { type } from "@testing-library/user-event/dist/type";
 import FormTodo from "./components/FormTodo";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import TodoList from "./components/TodoList";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useReducer } from "react";
+
+const taskReducer = (tasks, action) => {
+  switch (action.type) {
+    case "add":
+      return [...tasks, action.payload];
+    case "mark":
+      return tasks.map(task =>
+        task.id === action.payload ? { ...task, isDone: !task.isDone } : task
+      );
+    case "delete":
+      return tasks.filter(task => task.id !== action.payload);
+    default:
+      throw new Error("Unknown action");
+  }
+};
 
 function App() {
-  const [tasks, setTasks] = useState(
+  const [tasks, dispatch] = useReducer(
+    taskReducer,
+    null,
     () => JSON.parse(localStorage.getItem("tasks")) ?? []
   );
 
@@ -20,21 +38,15 @@ function App() {
   );
 
   const handleAddTask = task => {
-    setTasks(prev => [...prev, task]);
+    dispatch({ type: "add", payload: task });
   };
 
   const handleMarkTask = id => {
-    const newTasks = tasks.map(task =>
-      task.id === id ? { ...task, isDone: !task.isDone } : task
-    );
-    setTasks(newTasks);
+    dispatch({ type: "mark", payload: id });
   };
 
   const handleDeleteTask = id => {
-    const newTasks = [...tasks];
-    const idx = newTasks.findIndex(task => task.id === id);
-    newTasks.splice(idx, 1);
-    setTasks(newTasks);
+    dispatch({ type: "delete", payload: id });
   };
 
   return (
