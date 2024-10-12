@@ -15,6 +15,12 @@ const taskReducer = (tasks, action) => {
       );
     case "delete":
       return tasks.filter(task => task.id !== action.payload);
+    case "edit":
+      return tasks.map(task =>
+        task.id === action.payload.id
+          ? { ...task, desc: action.payload.desc }
+          : task
+      );
     default:
       throw new Error("Unknown action");
   }
@@ -32,9 +38,15 @@ function App() {
   useEffect(
     function () {
       localStorage.setItem("tasks", JSON.stringify(tasks));
-      inputEl.current.focus();
     },
     [tasks]
+  );
+
+  useEffect(
+    function () {
+      inputEl.current.focus();
+    },
+    [inputEl]
   );
 
   const handleAddTask = task => {
@@ -49,6 +61,10 @@ function App() {
     dispatch({ type: "delete", payload: id });
   };
 
+  const handleEditTask = task => {
+    dispatch({ type: "edit", payload: task });
+  };
+
   return (
     <div className="wrapper">
       <Nav></Nav>
@@ -59,6 +75,7 @@ function App() {
           tasks={tasks}
           onMarkTask={handleMarkTask}
           onDeleteTask={handleDeleteTask}
+          onEditTask={handleEditTask}
         ></TodoList>
       </main>
     </div>
