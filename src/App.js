@@ -1,9 +1,8 @@
-import { type } from "@testing-library/user-event/dist/type";
 import FormTodo from "./components/FormTodo";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import TodoList from "./components/TodoList";
-import { useEffect, useState, useRef, useReducer } from "react";
+import { useEffect, useRef, useReducer } from "react";
 
 const taskReducer = (tasks, action) => {
   switch (action.type) {
