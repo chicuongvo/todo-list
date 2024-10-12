@@ -109,7 +109,7 @@ form input {
   background-color: #343a40;
   color: var(--color-snd);
   padding: 16px 24px;
-  font-size: 20px;
+  font-size: 24px;
   border: none;
   border-radius: 15px;
 }
@@ -170,6 +170,15 @@ form button {
 .del-icon {
   width: 32px;
   height: 32px;
+}
+
+.task-form {
+  flex-grow: 1;
+}
+
+.task-input {
+  padding: 0;
+  font-size: 24px;
 }
 
 ::-webkit-scrollbar {
