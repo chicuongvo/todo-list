@@ -2,7 +2,7 @@ import FormTodo from "./components/FormTodo";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import TodoList from "./components/TodoList";
-import { useEffect, useRef, useReducer } from "react";
+import { useEffect, useRef, useReducer, createContext } from "react";
 
 const taskReducer = (tasks, action) => {
   switch (action.type) {
@@ -24,6 +24,8 @@ const taskReducer = (tasks, action) => {
       throw new Error("Unknown action");
   }
 };
+
+export const TaskContext = createContext();
 
 function App() {
   const [tasks, dispatch] = useReducer(
@@ -65,19 +67,24 @@ function App() {
   };
 
   return (
-    <div className="wrapper">
-      <Nav></Nav>
-      <main>
-        <Header tasks={tasks}></Header>
-        <FormTodo onAddTask={handleAddTask} ref={inputEl}></FormTodo>
-        <TodoList
-          tasks={tasks}
-          onMarkTask={handleMarkTask}
-          onDeleteTask={handleDeleteTask}
-          onEditTask={handleEditTask}
-        ></TodoList>
-      </main>
-    </div>
+    <TaskContext.Provider
+      value={{
+        tasks,
+        onAddTask: handleAddTask,
+        onMarkTask: handleMarkTask,
+        onDeleteTask: handleDeleteTask,
+        onEditTask: handleEditTask,
+      }}
+    >
+      <div className="wrapper">
+        <Nav />
+        <main>
+          <Header />
+          <FormTodo ref={inputEl}></FormTodo>
+          <TodoList />
+        </main>
+      </div>
+    </TaskContext.Provider>
   );
 }
 

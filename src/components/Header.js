@@ -1,4 +1,9 @@
-export default function Header({ tasks }) {
+import { useContext } from "react";
+import { TaskContext } from "../App";
+
+export default function Header() {
+  const { tasks } = useContext(TaskContext);
+
   const total = tasks.length;
   const taskDone = tasks.filter(tasks => tasks.isDone).length;
   return (

@@ -1,7 +1,9 @@
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useContext } from "react";
+import { TaskContext } from "../App";
 
-const FormTodo = forwardRef(({ onAddTask }, ref) => {
+const FormTodo = forwardRef((_, ref) => {
   const [task, setTask] = useState("");
+  const { onAddTask } = useContext(TaskContext);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -20,7 +22,7 @@ const FormTodo = forwardRef(({ onAddTask }, ref) => {
         placeholder="Enter your task"
         onChange={e => setTask(e.target.value)}
         ref={ref}
-      ></input>
+      />
       <button>+</button>
     </form>
   );
