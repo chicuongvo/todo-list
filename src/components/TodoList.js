@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { TaskContext } from "../App";
 
 import EditIcon from "../assets/EditIcon";
-import DoneIcon from "../assets/DoneIcon";
 import DeleteIcon from "../assets/DeleteIcon";
 
 export default function TodoList() {
@@ -11,63 +10,28 @@ export default function TodoList() {
   return (
     <ul className="todo-list">
       {tasks.map(task => (
-        <TaskItem key={task.id} {...task}></TaskItem>
+        <TaskItem key={task.id} task={task}></TaskItem>
       ))}
     </ul>
   );
 }
 
-function TaskItem({ id, desc, isDone }) {
-  const { onMarkTask, onDeleteTask, onEditTask } = useContext(TaskContext);
-  const [isEditing, setIsEditing] = useState(false);
-  const [task, setTask] = useState(desc);
-  const inputEl = useRef(null);
+function TaskItem({ task }) {
+  const { onMarkTask, onDeleteTask, setIsOpenModal, setSelectedTask } =
+    useContext(TaskContext);
 
-  useEffect(
-    function () {
-      if (isEditing) inputEl.current.focus();
-    },
-    [isEditing]
-  );
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    setIsEditing(false);
-    onEditTask({ desc: task, id, isDone });
-  };
-
-  const handleEditClick = () => {
-    setIsEditing(prev => !prev);
-  };
-
-  const handleDoneClick = () => {
-    setIsEditing(false);
-    onEditTask({ desc: task, id, isDone });
+  const handleEditClick = task => {
+    setIsOpenModal(true);
+    setSelectedTask(task);
   };
 
   return (
-    <li className={`task ${isDone ? "task--done" : ""}`}>
-      <div className="radio" onClick={() => onMarkTask(id)}></div>
-      {isEditing ? (
-        <>
-          <form className="task-form" value={task} onSubmit={handleSubmit}>
-            <input
-              className="task-input"
-              type="text"
-              value={task}
-              onChange={e => setTask(e.target.value)}
-              ref={inputEl}
-            />
-          </form>
-          <DoneIcon onClick={handleDoneClick} />
-        </>
-      ) : (
-        <>
-          <p>{desc}</p>
-          <EditIcon onClick={handleEditClick} />
-        </>
-      )}
-      <DeleteIcon onClick={() => onDeleteTask(id)} />
+    <li className={`task ${task.isDone ? "task--done" : ""}`}>
+      <div className="radio" onClick={() => onMarkTask(task.id)}></div>
+      <p className="task-name">{task.name}</p>
+      <p className="deadline">{task.deadline}</p>
+      <EditIcon onClick={() => handleEditClick(task)} />
+      <DeleteIcon onClick={() => onDeleteTask(task.id)} />
     </li>
   );
 }

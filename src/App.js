@@ -1,8 +1,10 @@
+import Dropbox from "./components/Dropbox";
 import FormTodo from "./components/FormTodo";
 import Header from "./components/Header";
+import Modal from "./components/Modal";
 import Nav from "./components/Nav";
 import TodoList from "./components/TodoList";
-import { useEffect, useRef, useReducer, createContext } from "react";
+import { useEffect, useRef, useReducer, createContext, useState } from "react";
 
 const taskReducer = (tasks, action) => {
   switch (action.type) {
@@ -17,9 +19,20 @@ const taskReducer = (tasks, action) => {
     case "edit":
       return tasks.map(task =>
         task.id === action.payload.id
-          ? { ...task, desc: action.payload.desc }
+          ? {
+              ...task,
+              name: action.payload.name,
+              desc: action.payload.desc,
+              deadline: action.payload.deadline,
+            }
           : task
       );
+    case "import": {
+      const newTasks = action.payload.map(task => {
+        return { ...task, id: crypto.randomUUID() };
+      });
+      return [...tasks, ...newTasks];
+    }
     default:
       throw new Error("Unknown action");
   }
@@ -28,6 +41,9 @@ const taskReducer = (tasks, action) => {
 export const TaskContext = createContext();
 
 function App() {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenDropbox, setIsOpenDropbox] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
   const [tasks, dispatch] = useReducer(
     taskReducer,
     null,
@@ -41,13 +57,6 @@ function App() {
       localStorage.setItem("tasks", JSON.stringify(tasks));
     },
     [tasks]
-  );
-
-  useEffect(
-    function () {
-      inputEl.current.focus();
-    },
-    [inputEl]
   );
 
   const handleAddTask = task => {
@@ -66,6 +75,10 @@ function App() {
     dispatch({ type: "edit", payload: task });
   };
 
+  const handleImportTasks = tasks => {
+    dispatch({ type: "import", payload: tasks });
+  };
+
   return (
     <TaskContext.Provider
       value={{
@@ -74,14 +87,23 @@ function App() {
         onMarkTask: handleMarkTask,
         onDeleteTask: handleDeleteTask,
         onEditTask: handleEditTask,
+        onImportTasks: handleImportTasks,
+        isOpenModal,
+        setIsOpenModal,
+        selectedTask,
+        setSelectedTask,
+        isOpenDropbox,
+        setIsOpenDropbox,
       }}
     >
       <div className="wrapper">
         <Nav />
         <main>
           <Header />
-          <FormTodo ref={inputEl}></FormTodo>
+          <FormTodo />
           <TodoList />
+          <Modal />
+          <Dropbox />
         </main>
       </div>
     </TaskContext.Provider>
