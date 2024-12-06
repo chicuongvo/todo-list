@@ -3,8 +3,9 @@ import FormTodo from "./components/FormTodo";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
 import Nav from "./components/Nav";
+import Stats from "./components/Stats";
 import TodoList from "./components/TodoList";
-import { useEffect, useRef, useReducer, createContext, useState } from "react";
+import { useEffect, useReducer, createContext, useState } from "react";
 
 const taskReducer = (tasks, action) => {
   switch (action.type) {
@@ -42,6 +43,7 @@ export const TaskContext = createContext();
 
 function App() {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenStats, setIsOpenStats] = useState(false);
   const [isOpenDropbox, setIsOpenDropbox] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [tasks, dispatch] = useReducer(
@@ -49,8 +51,6 @@ function App() {
     null,
     () => JSON.parse(localStorage.getItem("tasks")) ?? []
   );
-
-  const inputEl = useRef(null);
 
   useEffect(
     function () {
@@ -90,6 +90,8 @@ function App() {
         onImportTasks: handleImportTasks,
         isOpenModal,
         setIsOpenModal,
+        isOpenStats,
+        setIsOpenStats,
         selectedTask,
         setSelectedTask,
         isOpenDropbox,
@@ -104,6 +106,7 @@ function App() {
           <TodoList />
           <Modal />
           <Dropbox />
+          <Stats />
         </main>
       </div>
     </TaskContext.Provider>

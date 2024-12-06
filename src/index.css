@@ -236,7 +236,7 @@ form button {
 }
 
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 
 .task-desc {
@@ -277,4 +277,27 @@ form input {
   font-size: 18px;
   border: none;
   border-radius: 15px;
+}
+
+.excel {
+  background-color: transparent;
+  border: 3px solid #868e96;
+}
+
+button.summary {
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+
+button.summary p {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.stats {
+  height: 50px;
+  width: 50px;
+  color: #fff;
 }

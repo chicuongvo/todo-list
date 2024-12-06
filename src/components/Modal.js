@@ -11,6 +11,7 @@ function Modal() {
     onEditTask,
     setSelectedTask,
   } = useContext(TaskContext);
+
   const handleSubmit = event => {
     event.preventDefault();
     setIsOpenModal(false);
@@ -23,7 +24,9 @@ function Modal() {
     else onEditTask({ ...newTask, id: selectedTask.id });
     setSelectedTask(null);
   };
+
   const today = new Date().toISOString().split("T")[0];
+
   return (
     <div className={isOpenModal ? "" : "hidden"}>
       <div className={styles.modal}>

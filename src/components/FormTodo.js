@@ -1,6 +1,8 @@
 import { useContext } from "react";
-import { TaskContext } from "../App";
 import * as XLSX from "xlsx";
+
+import { TaskContext } from "../App";
+import { monthlyData, summaryData } from "./Stats";
 
 const FormTodo = () => {
   const { tasks, setIsOpenModal, setIsOpenDropbox } = useContext(TaskContext);
@@ -11,10 +13,16 @@ const FormTodo = () => {
   };
 
   const handleExport = () => {
+    console.log(monthlyData);
     const ws = XLSX.utils.json_to_sheet(tasks);
+    const ws1 = XLSX.utils.aoa_to_sheet(monthlyData);
+    const ws2 = XLSX.utils.aoa_to_sheet(summaryData);
 
     const wb = XLSX.utils.book_new();
+
     XLSX.utils.book_append_sheet(wb, ws, "Data");
+    XLSX.utils.book_append_sheet(wb, ws1, "Thống kê theo tháng");
+    XLSX.utils.book_append_sheet(wb, ws2, "Tỉ lệ hoàn thành");
 
     XLSX.writeFile(wb, "data.xlsx");
   };
@@ -38,7 +46,10 @@ const FormTodo = () => {
         </svg>
         Create
       </button>
-      <button className="btn-add-task" onClick={() => setIsOpenDropbox(true)}>
+      <button
+        className="btn-add-task excel"
+        onClick={() => setIsOpenDropbox(true)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -55,7 +66,7 @@ const FormTodo = () => {
         </svg>
         Import
       </button>
-      <button className="btn-add-task" onClick={handleExport}>
+      <button className="btn-add-task excel" onClick={handleExport}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

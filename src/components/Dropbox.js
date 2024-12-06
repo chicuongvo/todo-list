@@ -51,7 +51,12 @@ function Dropbox() {
         >
           ×
         </button>
-        <input type="file" accept=".xls,.xlsx" onChange={handleFileUpload} />
+        <input
+          type="file"
+          accept=".xls,.xlsx"
+          onChange={handleFileUpload}
+          required
+        />
         <button className="btn-add-file" type="submit">
           Upload file Excel
         </button>
