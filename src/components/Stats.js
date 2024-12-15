@@ -36,7 +36,10 @@ function Stats() {
   const monthlyStats = new Array(12).fill(0);
   tasks.forEach(todo => {
     const deadline = todo.deadline;
-    const [year, month] = deadline.split("-");
+    const [, date] = deadline.split(" "); // Tách giờ và ngày
+
+    const [, month, year] = date.split("/"); // Tách ngày, tháng, năm
+    // const [year, month] = deadline.split("-");
     if (year.slice(-2) === currentYear) {
       if (!monthlyStats[month - 1]) {
         monthlyStats[month - 1] = 0;

@@ -10,7 +10,7 @@ import { useEffect, useReducer, createContext, useState } from "react";
 const taskReducer = (tasks, action) => {
   switch (action.type) {
     case "add":
-      return [...tasks, action.payload];
+      return [action.payload, ...tasks];
     case "mark":
       return tasks.map(task =>
         task.id === action.payload ? { ...task, isDone: !task.isDone } : task

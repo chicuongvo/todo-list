@@ -2,6 +2,35 @@ import { useContext } from "react";
 import styles from "../styles/Modal.module.css";
 import { TaskContext } from "../App";
 
+const formatDate = dateString => {
+  const date = new Date(dateString);
+
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+
+  const formattedDate = `${hours}:${minutes} ${day}/${month}/${year}`;
+  return formattedDate;
+};
+
+const datetimeToISOString = datetimeString => {
+  // Tách giờ và ngày tháng năm từ chuỗi
+  const [time, date] = datetimeString.split(" "); // Tách giờ và ngày
+
+  const [day, month, year] = date.split("/"); // Tách ngày, tháng, năm
+
+  // Tách giờ và phút từ chuỗi time
+  const [hours, minutes] = time.split(":");
+
+  // Kết hợp lại theo định dạng ISO 8601: YYYY-MM-DDTHH:mm
+  const isoString = `${year}-${month}-${day}T${hours}:${minutes}`;
+  console.log(isoString);
+  return isoString;
+};
+
 function Modal() {
   const {
     isOpenModal,
@@ -20,12 +49,13 @@ function Modal() {
     const newTask = Object.fromEntries(formData);
     newTask.id = crypto.randomUUID();
     newTask.isDone = false;
+    newTask.deadline = formatDate(newTask.deadline);
     if (!selectedTask) onAddTask(newTask);
     else onEditTask({ ...newTask, id: selectedTask.id });
     setSelectedTask(null);
   };
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().slice(0, 16);
 
   return (
     <div className={isOpenModal ? "" : "hidden"}>
@@ -52,9 +82,13 @@ function Modal() {
           <input type="text" name="desc" defaultValue={selectedTask?.desc} />
           <label>Deadline</label>
           <input
-            type="date"
+            type="datetime-local"
             name="deadline"
-            defaultValue={selectedTask?.deadline ?? today}
+            defaultValue={
+              selectedTask != null
+                ? datetimeToISOString(selectedTask.deadline)
+                : today
+            }
           />
           <button className={styles.btn} type="submit">
             Save
