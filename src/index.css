@@ -301,3 +301,21 @@ button.summary p {
   width: 50px;
   color: #fff;
 }
+
+.sort-option {
+  margin-bottom: 16px;
+}
+
+.sort-option label {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.sort-option select {
+  padding: 6px 10px;
+  background-color: var(--color-rd);
+  color: #fff;
+  font-size: 16px;
+  border: 1px solid #868e96;
+  border-radius: 4px;
+}

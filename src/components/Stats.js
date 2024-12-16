@@ -50,11 +50,13 @@ function Stats() {
   monthlyData = [];
   for (let month = 1; month <= 12; month++) {
     const monthStr = month.toString().padStart(2, "0");
-    const taskCount = monthlyStats[monthStr] || 0;
+    const taskCount = monthlyStats[month - 1] || 0;
+    // console.log(monthStr, taskCount);
     monthlyData.push([`Tháng ${monthStr}`, taskCount]);
   }
 
   summaryData = [
+    ["Số lượng task", `${totalTodos}`],
     ["Tỉ lệ hoàn thành", `${completedPercentage}%`],
     ["Tỉ lệ chưa hoàn thành", `${pendingPercentage}%`],
   ];
